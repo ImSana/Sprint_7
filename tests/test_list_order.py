@@ -1,11 +1,11 @@
-def register_new_courier_and_return_login_password():
-    # (ваш код, который вы уже написали)
+import allure
+from creat_curier import *
 
-    if response.status_code == 201: # если регистрация прошла успешно
-        id = response.json()['data']['_id']  # получаем id курьера из ответа
-        print("Courier ID:", id)  # выводим id курьера
-        login_pass.append(id)  # добавляем id курьера в список
-        login_pass.append(login)  # добавляем логин курьера в список
-        login_pass.append(password)  # добавляем пароль курьера в список
+class TestGetOrdersList:
 
-    return login_pass  # возвращаем список
+    @allure.description("Получаем список заказов")
+    @allure.title('Успешное получение списка заказов')
+    def test_get_orders_list_success(self):
+        response = requests.get(TestAPIOrdersLinks.main_url + TestAPIOrdersLinks.main_orders_url)
+        orders_list = response.json()["orders"]
+        assert response.status_code == 200 and isinstance(orders_list, list) == True
