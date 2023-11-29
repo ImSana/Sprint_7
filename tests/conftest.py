@@ -4,7 +4,7 @@ from static_data import TestAPICourierLinks
 
 
 @pytest.fixture()
-def delete_user():
+def test_user():
     response, login_pass = register_new_courier_and_return_login_password()
     yield response, login_pass
 

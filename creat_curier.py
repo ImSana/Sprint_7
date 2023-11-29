@@ -33,7 +33,7 @@ def register_new_courier_and_return_login_password():
     return response, login_pass
 
 
-def non_existing_courier_id():
+def non_existing_id_courier():
     courier = register_new_courier_and_return_login_password()
     sign_in = {
         "login": courier[1][0],
@@ -41,11 +41,11 @@ def non_existing_courier_id():
     }
 
     courier_signin = requests.post(TestAPICourierLinks.main_url + TestAPICourierLinks.login_url, data=sign_in)
-    courier_id = courier_signin.json()["id"] + random.randint(1000, 9999)
+    courier_id = courier_signin.json()["id"] + random.randint(100, 900)
     return courier_id
 
 
-def create_new_order():
+def return_new_order():
     payload = json.dumps(TestOrder.test_order)
     response = requests.post(TestAPIOrdersLinks.main_url + TestAPIOrdersLinks.main_orders_url, data=payload)
     track = response.json()["track"]
