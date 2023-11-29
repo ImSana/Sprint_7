@@ -1,6 +1,8 @@
 import pytest
+import requests
+
 from creat_curier import *
-from static_data import TestAPICourierLinks
+from ready_data import TestAPICourierLinks
 
 
 @pytest.fixture()

@@ -2,7 +2,7 @@ import requests
 import random
 import string
 import json
-from static_data import TestAPICourierLinks, TestAPIOrdersLinks, TestOrder
+from ready_data import TestAPICourierLinks, TestAPIOrdersLinks, TestOrder
 
 
 def register_new_courier_and_return_login_password():
@@ -41,7 +41,7 @@ def non_existing_id_courier():
     }
 
     courier_signin = requests.post(TestAPICourierLinks.main_url + TestAPICourierLinks.login_url, data=sign_in)
-    courier_id = courier_signin.json()["id"] + random.randint(100, 900)
+    courier_id = courier_signin.json()["id"] + random.randint(1000, 9000)
     return courier_id
 
 

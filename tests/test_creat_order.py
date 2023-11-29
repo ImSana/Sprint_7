@@ -1,12 +1,12 @@
 import pytest
 import allure
-from static_data import OrdersErrors
+from ready_data import OrdersErrors
 from creat_curier import *
 
 
 class TestCreateOrder:
 
-    @allure.description('Создаем заказ с разными цветами и без выбора цвета')
+    @allure.description('Создание заказа с разными вариантами цветов')
     @allure.title('Создание заказа с разными цветами')
     @pytest.mark.parametrize('color', (["BLACK"], ["GREY"], ["BLACK", "GREY"], []))
     def test_order_creation_with_different_colors_success(self, color):
@@ -17,7 +17,7 @@ class TestCreateOrder:
 
 
 class TestTrackOrder:
-    @allure.description('Получаем данные о заказе успешно')
+    @allure.description('Успешное получение данных о заказе')
     @allure.title('Получение данных о заказе')
     def test_order_track_success(self):
         new_track = return_new_order()
@@ -25,7 +25,7 @@ class TestTrackOrder:
         response = requests.get(TestAPIOrdersLinks.main_url + TestAPIOrdersLinks.track_order_url + str(new_track), data=payload)
         assert response.status_code == 200 and 'order' in response.text
 
-    @allure.description('Получаем данные о заказе без номера заказа')
+    @allure.description('Получение данных о заказе без номера заказа')
     @allure.title('Получение данных о заказе без номера')
     def test_order_track_no_order_id_fail(self):
         new_track = return_new_order()
@@ -34,7 +34,7 @@ class TestTrackOrder:
 
         assert response.status_code == 400 and response.json()['message'] == OrdersErrors.track_order_no_data
 
-    @allure.description('Получаем данные о заказе с несуществующим номером')
+    @allure.description('Получение данных о заказе с несуществующим номером')
     @allure.title('Получение данных о несуществующем заказе')
     def test_order_track_wrong_order_id_fail(self):
         new_track = 0
@@ -43,8 +43,10 @@ class TestTrackOrder:
 
         assert response.status_code == 404 and response.json()['message'] == OrdersErrors.track_order_no_such_order
 
+
 class TestAcceptOrder:
-    @allure.description('Успешный акцепт заказа')
+
+    @allure.description('Успешный принятие заказа')
     @allure.title('Прием заказа курьером')
     def test_order_accept_success(self, test_user):
         new_courier = {"login": test_user[1][0],
@@ -62,7 +64,7 @@ class TestAcceptOrder:
 
         assert response.status_code == 200 and response.json()['ok'] == True
 
-    @allure.description('Акцепт заказа при отправке данных без id курьера')
+    @allure.description('Принятие заказа при отправке данных без id курьера')
     @allure.title('Прием заказа без id курьера')
     def test_order_accept_no_сourier_id_fail(self, test_user):
         new_courier = {"login": test_user[1][0],
@@ -81,7 +83,7 @@ class TestAcceptOrder:
 
         assert response.status_code == 400 and response.json()['message'] == OrdersErrors.accept_order_no_data
 
-    @allure.description('Акцепт заказа при отправке данных без id заказа')
+    @allure.description('Принятие заказа при отправке данных без id заказа')
     @allure.title('Прием заказа без id заказа')
     def test_order_accept_no_order_id_fail(self, test_user):
         new_courier = {"login": test_user[1][0],
@@ -99,10 +101,10 @@ class TestAcceptOrder:
 
         assert response.status_code == 400 and response.json()['message'] == OrdersErrors.accept_order_no_order_number
 
-    @allure.description('Акцепт заказа с отправкой неверного id курьера')
+    @allure.description('Принятие заказа с отправкой неверного id курьера')
     @allure.title('Прием заказа с некорректным id')
     def test_order_accept_wrong_courier_id_fail(self):
-        courier_id = non_existing_courier_id()
+        courier_id = non_existing_id_courier()
         new_track = return_new_order()
         track_order = requests.get(TestAPIOrdersLinks.main_url + TestAPIOrdersLinks.track_order_url + str(new_track))
         order_id = track_order.json()['order']['id']

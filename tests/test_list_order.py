@@ -3,7 +3,7 @@ from creat_curier import *
 
 class TestGetOrdersList:
 
-    @allure.description("Получаем список заказов")
+    @allure.description("Получение списка заказов")
     @allure.title('Успешное получение списка заказов')
     def test_get_orders_list_success(self):
         response = requests.get(TestAPIOrdersLinks.main_url + TestAPIOrdersLinks.main_orders_url)
