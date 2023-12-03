@@ -1,7 +1,8 @@
 import pytest
 import allure
 from ready_data import TestCourier, CourierErrors
-from creat_curier import *
+from courier_api import *
+from urls import TestAPIBaseLinks, TestAPICourierLinks
 
 
 class TestCourierCreateAPI:
@@ -22,7 +23,7 @@ class TestCourierCreateAPI:
                 "firstName": test_user[1][2]
             }
 
-        r = requests.post(TestAPICourierLinks.main_url + TestAPICourierLinks.courier_url, data=exist_login_courier)
+        r = requests.post(TestAPIBaseLinks.main_url + TestAPICourierLinks.courier_url, data=exist_login_courier)
 
         assert r.status_code == 409 and r.json()['message'] == CourierErrors.create_already_exist
 
@@ -31,7 +32,7 @@ class TestCourierCreateAPI:
     @pytest.mark.parametrize('user_data', (TestCourier.create_no_login_courier, TestCourier.create_no_password_courier,
                                            TestCourier.create_empty_login, TestCourier.create_empty_password))
     def test_courier_create_no_data_fail(self, user_data):
-        r = requests.post(TestAPICourierLinks.main_url + TestAPICourierLinks.courier_url, data=user_data)
+        r = requests.post(TestAPIBaseLinks.main_url + TestAPICourierLinks.courier_url, data=user_data)
 
         assert r.status_code == 400 and r.json()['message'] == CourierErrors.create_no_data
 

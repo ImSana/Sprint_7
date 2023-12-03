@@ -1,8 +1,8 @@
 import pytest
 import requests
 
-from creat_curier import *
-from ready_data import TestAPICourierLinks
+from courier_api import *
+from urls import TestAPIBaseLinks, TestAPICourierLinks
 
 
 @pytest.fixture()
@@ -15,6 +15,16 @@ def test_user():
         "password": login_pass[1]
     }
 
-    courier_signin = requests.post(TestAPICourierLinks.main_url + TestAPICourierLinks.login_url, data=sign_in)
+    courier_signin = requests.post(TestAPIBaseLinks.main_url + TestAPICourierLinks.login_url, data=sign_in)
     courier_id = courier_signin.json()["id"]
-    requests.delete(TestAPICourierLinks.main_url + TestAPICourierLinks.login_url + str(courier_id))
+    requests.delete(TestAPIBaseLinks.main_url + TestAPICourierLinks.login_url + str(courier_id))
+
+
+@pytest.fixture
+def courier_login(test_user):
+    return test_user[1][0]
+
+
+@pytest.fixture
+def courier_password(test_user):
+    return test_user[1][1]
